@@ -1,1 +1,1500 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>飲食與體態記錄</title>
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --page-bg: #efe9df;
+    --shell-bg: #f7f2ea;
+    --text: #3a3330;
+    --muted: #a4988c;
+    --muted2: #c0b5a6;
+    --accent: #b56a45;
+    --accent-warn: #c65d3b;
+    --green: #5e9a6f;
+    --green-good: #4c8a5c;
+    --red-bad: #c0442a;
+    --panel: #efe7db;
+    --border: #e5dccf;
+    --card: #fffdf9;
+    --disabled: #d8cfc2;
+    --danger-border: #e2b2a2;
+    --danger-text: #b0402a;
+  }
+  body.theme-dark {
+    --page-bg: #17161a; --shell-bg: #201f24; --text: #eae6e1; --muted: #948e8a; --muted2: #66615d;
+    --accent: #e0955f; --accent-warn: #ff7a57; --green: #7fbd8f; --green-good: #8fd39f; --red-bad: #ff8a72;
+    --panel: #2b2a30; --border: #3a3940; --card: #242329; --disabled: #3a3940;
+    --danger-border: #5c3630; --danger-text: #ff8a72;
+  }
+  body.theme-mint {
+    --page-bg: #e7f3ee; --shell-bg: #f3faf7; --text: #234034; --muted: #7fa396; --muted2: #b7cfc6;
+    --accent: #2f9e7a; --accent-warn: #d1573f; --green: #4f8f6c; --green-good: #3d7a58; --red-bad: #c0432c;
+    --panel: #dcefe7; --border: #c7e2d8; --card: #ffffff; --disabled: #cfe4db;
+    --danger-border: #f0b8ab; --danger-text: #c0432c;
+  }
+  body.theme-forest {
+    --page-bg: #efe6d8; --shell-bg: #f7f1e6; --text: #3b2f22; --muted: #8d7a62; --muted2: #c3b39c;
+    --accent: #8a6a3e; --accent-warn: #b5502e; --green: #6a8a52; --green-good: #55703f; --red-bad: #9c4326;
+    --panel: #e6dcc4; --border: #d8caa9; --card: #fbf6ea; --disabled: #ded0ae;
+    --danger-border: #d8b39a; --danger-text: #9c4326;
+  }
+  body.theme-pastel {
+    --page-bg: #f7ecf2; --shell-bg: #fdf6fa; --text: #4a3547; --muted: #b391a6; --muted2: #ddc2d3;
+    --accent: #d97ba0; --accent-warn: #e0577e; --green: #8bb08a; --green-good: #6f9a6e; --red-bad: #c94b6f;
+    --panel: #f3ddea; --border: #ecc9de; --card: #ffffff; --disabled: #f0d9e6;
+    --danger-border: #f0b9cd; --danger-text: #c94b6f;
+  }
+  body.theme-ocean {
+    --page-bg: #e5eef3; --shell-bg: #f2f8fb; --text: #1f3b4d; --muted: #7597a8; --muted2: #b9d0da;
+    --accent: #2f7ea8; --accent-warn: #e0703f; --green: #3f9d84; --green-good: #2f7e69; --red-bad: #c1512c;
+    --panel: #dceaf1; --border: #c3dbe6; --card: #ffffff; --disabled: #cfe2ea;
+    --danger-border: #f0c1ab; --danger-text: #c1512c;
+  }
+  body.theme-indigo {
+    --page-bg: #0e0d1a; --shell-bg: linear-gradient(165deg,#1b1a2e,#241f3d);
+    --text: #e8e4f5; --muted: #948fc2; --muted2: #4f4a72;
+    --accent: #8b7bdb; --accent-warn: #ff6f61; --green: #7fd1ae; --green-good: #5fc79a; --red-bad: #ff6f61;
+    --panel: #262244; --border: #34305a; --card: #201d38; --disabled: #34305a;
+    --danger-border: #5c3650; --danger-text: #ff8fae;
+  }
+  body.theme-charcoal {
+    --page-bg: #101010; --shell-bg: #191919; --text: #ece6d8; --muted: #9a9488; --muted2: #55504a;
+    --accent: #cda45e; --accent-warn: #e2703f; --green: #7fae7f; --green-good: #6f9e6f; --red-bad: #d1573f;
+    --panel: #232323; --border: #333333; --card: #1e1e1e; --disabled: #333333;
+    --danger-border: #5c3630; --danger-text: #ff8a72;
+  }
+  body.theme-deepsea {
+    --page-bg: #051520; --shell-bg: linear-gradient(165deg,#04121c,#0d3a52);
+    --text: #dff2f7; --muted: #7fa9bb; --muted2: #2e5568;
+    --accent: #34b3c9; --accent-warn: #ff8a5b; --green: #57c69a; --green-good: #3fa87f; --red-bad: #ff7a5c;
+    --panel: #0f2c3d; --border: #1c4257; --card: #0c2534; --disabled: #1c4257;
+    --danger-border: #4a2a26; --danger-text: #ff8a72;
+  }
+  body.theme-volcanic {
+    --page-bg: #120a0a; --shell-bg: linear-gradient(165deg,#1a0e0d,#3a1410);
+    --text: #f5e6df; --muted: #b98a7a; --muted2: #5c3a30;
+    --accent: #ff6b3d; --accent-warn: #ff3d3d; --green: #7fbd8f; --green-good: #67a374; --red-bad: #ff5252;
+    --panel: #26130f; --border: #46201a; --card: #1e100d; --disabled: #46201a;
+    --danger-border: #6b2a22; --danger-text: #ff8a72;
+  }
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    font-family: 'Microsoft JhengHei','微軟正黑體','PingFang TC',-apple-system,BlinkMacSystemFont,sans-serif;
+    color: var(--text);
+  }
+  a { color: var(--accent); }
+  input, textarea, select { font-family: inherit; }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  #app-shell {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--shell-bg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .page { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
+  .hidden { display: none !important; }
+  .eyebrow { font-size: 12px; color: var(--muted); padding: 12px 24px 0; }
+  .h1 { font-size: 25px; font-weight: 700; margin: 2px 24px 0; }
+  .card { margin: 16px 24px 0; background: var(--card); border-radius: 22px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+  .row-between { display: flex; justify-content: space-between; align-items: baseline; }
+  .label-bold { font-size: 13px; font-weight: 700; }
+  .val-orange { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .val-green { font-size: 22px; font-weight: 700; color: var(--green); }
+  .sub { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .bar-track { margin-top: 10px; height: 10px; border-radius: 6px; background: var(--panel); overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width .4s; }
+  .weight-row { margin-top: 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .weight-row .lbl { font-weight: 700; flex: none; white-space: nowrap; }
+  .num-input { width: 72px; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 13px; background: var(--card); color: var(--text); }
+  .btn-row { margin: 18px 24px 0; display: flex; gap: 12px; }
+  .btn-primary { flex: 1.4; background: var(--accent); color: var(--card); border-radius: 18px; padding: 15px; font-size: 14px; font-weight: 700; text-align: center; cursor: pointer; user-select: none; }
+  .btn-primary:active { transform: scale(.97); }
+  .btn-secondary { flex: 1; background: var(--card); border-radius: 18px; padding: 15px; font-size: 14px; font-weight: 700; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,.07); cursor: pointer; display: block; }
+  .section-title { margin: 20px 24px 0; display: flex; justify-content: space-between; align-items: baseline; }
+  .section-title .t { font-size: 16px; font-weight: 700; }
+  .section-title .s { font-size: 12px; color: var(--muted); }
+  .chip-wrap { margin: 10px 24px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { padding: 8px 14px; border-radius: 999px; background: var(--card); border: 1px solid var(--border); font-size: 12.5px; cursor: pointer; }
+  .chip:active { background: var(--panel); }
+  .entry-title { margin: 20px 24px 0; font-size: 16px; font-weight: 700; }
+  .entry-list { margin: 8px 24px 20px; display: flex; flex-direction: column; }
+  .entry-empty { padding: 20px 0; font-size: 13px; color: var(--muted2); text-align: center; }
+  .entry-row { padding: 11px 0; display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px dashed var(--border); }
+  .entry-row .name { font-size: 13.5px; }
+  .entry-row .meta { font-size: 11px; color: var(--muted); }
+  .entry-row .kcal { font-size: 13.5px; font-weight: 700; }
+  .x-btn { width: 22px; height: 22px; border-radius: 50%; background: var(--panel); color: var(--muted); font-size: 13px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; }
 
+  .toggle-pill { display: flex; background: var(--panel); border-radius: 999px; padding: 3px; }
+  .toggle-pill .opt { padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted); }
+  .toggle-pill .opt.active { background: var(--card); color: var(--accent); }
+
+  .stat-row { margin: 16px 24px 0; display: flex; gap: 10px; }
+  .stat-box { flex: 1; background: var(--card); border-radius: 16px; padding: 12px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+  .stat-box .l { font-size: 11px; color: var(--muted); }
+  .stat-box .v { font-size: 19px; font-weight: 700; }
+
+  .chart-card { margin: 16px 24px 0; background: var(--card); border-radius: 22px; padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+  .chart-head { display: flex; justify-content: space-between; font-size: 13px; }
+  .chart-head .t { font-weight: 700; }
+  .chart-head .s { color: var(--muted); }
+  .bars-wrap { margin-top: 12px; position: relative; height: 120px; display: flex; align-items: flex-end; gap: 8px; }
+  .bars-wrap.month { gap: 2px; }
+  .target-line { position: absolute; left: 0; right: 0; border-top: 1.5px dashed var(--accent); opacity: .5; }
+  .bar { flex: 1; border-radius: 4px 4px 0 0; min-height: 2px; position: relative; }
+  .bar-value { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--muted); margin-bottom: 3px; white-space: nowrap; font-weight: 700; }
+  .bars-wrap.short { height: 90px; }
+  .axis-labels { margin-top: 6px; display: flex; justify-content: space-between; font-size: 10px; color: var(--muted2); }
+  .weight-chart { margin-top: 12px; position: relative; height: 90px; }
+  .weight-dot { position: absolute; width: 7px; height: 7px; margin-left: -3px; border-radius: 50%; background: var(--accent); }
+
+  .photo-grid { margin: 16px 24px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .photo-cell { position: relative; border-radius: 16px; overflow: hidden; background: var(--panel); }
+  .photo-cell .img { width: 100%; height: 170px; background-size: cover; background-position: center; }
+  .photo-cell .tag { position: absolute; left: 8px; bottom: 8px; background: rgba(0,0,0,.55); color: #fffdf9; font-size: 10.5px; padding: 3px 8px; border-radius: 999px; }
+  .photo-cell .del { position: absolute; right: 8px; top: 8px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,.5); color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .photo-cell.album-cover { cursor: pointer; }
+  .photo-cell .count-badge { position: absolute; right: 8px; top: 8px; background: rgba(0,0,0,.55); color: #fffdf9; font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+  .empty-msg { margin: 40px 24px; text-align: center; color: var(--muted2); font-size: 13px; line-height: 1.8; }
+
+  .settings-card { margin: 16px 24px 0; background: var(--card); border-radius: 22px; padding: 6px 18px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+  .settings-row { padding: 13px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border); }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row .lbl { font-size: 13.5px; font-weight: 700; }
+  .settings-row .unit { font-size: 12px; color: var(--muted); }
+  .settings-input { width: 80px; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 13px; text-align: right; background: var(--card); color: var(--text); }
+  .settings-select { border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 13px; background: var(--card); color: var(--text); max-width: 160px; }
+  .fav-manage-row { padding: 12px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border); }
+  .fav-manage-row .n { font-size: 13.5px; }
+  .fav-manage-row .m { font-size: 11px; color: var(--muted); }
+  .hint-row { padding: 12px 0; font-size: 12px; color: var(--muted); }
+  .danger-btn { margin: 16px 24px 0; background: var(--card); border: 1px solid var(--danger-border); color: var(--danger-text); border-radius: 16px; padding: 14px; text-align: center; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+
+  .theme-row { display: flex; gap: 14px; padding: 14px 0; flex-wrap: wrap; }
+  .theme-swatch { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; width: 56px; }
+  .theme-dot { width: 34px; height: 34px; border-radius: 50%; border: 2px solid transparent; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+  .theme-swatch.active .theme-dot { border-color: var(--text); }
+  .theme-swatch .theme-name { font-size: 10px; color: var(--muted); text-align: center; }
+
+  .tabbar { display: flex; padding: 10px 10px calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--card); border-top: 1px solid var(--border); }
+  .tabbar .item { flex: 1; text-align: center; font-size: 11px; cursor: pointer; font-weight: 400; color: var(--muted2); padding: 4px 0; }
+  .tabbar .item.active { font-weight: 700; color: var(--accent); }
+
+  .sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 40; }
+  .sheet { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--card); border-radius: 24px 24px 0 0; padding: 20px 24px calc(30px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -8px 30px rgba(0,0,0,.18); z-index: 41; max-height: 85vh; overflow-y: auto; }
+  .sheet-head { display: flex; justify-content: space-between; align-items: center; }
+  .sheet-head .t { font-size: 17px; font-weight: 700; }
+  .sheet-input { margin-top: 12px; width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 12px; font-size: 14px; background: var(--card); color: var(--text); }
+  .sheet-grid { margin-top: 10px; display: flex; gap: 8px; }
+  .sheet-field { flex: 1; }
+  .sheet-field .fl { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .sheet-field input { width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 10px; font-size: 14px; background: var(--card); color: var(--text); }
+  .fav-toggle { margin-top: 12px; display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+  .fav-check { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--accent); color: var(--card); font-size: 12px; display: flex; align-items: center; justify-content: center; }
+  .submit-btn { margin-top: 16px; border-radius: 14px; padding: 14px; text-align: center; font-size: 15px; font-weight: 700; cursor: pointer; color: var(--card); }
+
+  /* 日曆 */
+  .cal-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px 0; }
+  .cal-head .title { font-size: 20px; font-weight: 700; }
+  .cal-nav { display: flex; gap: 10px; align-items: center; }
+  .cal-nav-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--panel); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; color: var(--muted); }
+  .cal-today-btn { padding: 6px 12px; border-radius: 999px; background: var(--panel); font-size: 12px; font-weight: 700; color: var(--accent); cursor: pointer; }
+  .cal-weekdays { margin: 14px 24px 0; display: grid; grid-template-columns: repeat(7,1fr); text-align: center; font-size: 11px; color: var(--muted); }
+  .cal-grid { margin: 6px 24px 20px; display: grid; grid-template-columns: repeat(7,1fr); gap: 4px 0; }
+  .cal-cell { position: relative; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .cal-cell .num { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13.5px; }
+  .cal-cell.today .num { border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700; }
+  .cal-cell.has-data .num { background: var(--panel); font-weight: 700; }
+  .cal-cell .dot { position: absolute; bottom: 2px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+  .cal-cell.empty { visibility: hidden; }
+  .cal-summary-card { margin: 0 24px 20px; background: var(--card); border-radius: 18px; padding: 14px 18px; box-shadow: 0 1px 6px rgba(0,0,0,.07); font-size: 12.5px; color: var(--muted); }
+  .day-back { display: flex; align-items: center; gap: 6px; padding: 12px 24px 0; font-size: 13px; color: var(--muted); cursor: pointer; }
+  .note-card { margin: 14px 24px 0; background: var(--card); border-radius: 18px; padding: 14px 18px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+  .note-card .note-title { font-size: 12.5px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+  .note-textarea { width: 100%; border: none; resize: vertical; min-height: 56px; font-size: 13.5px; background: transparent; color: var(--text); font-family: inherit; padding: 0; }
+  .note-textarea:focus { outline: none; }
+
+  ::-webkit-scrollbar { width: 0; height: 0; }
+</style>
+</head>
+<body>
+<div id="app-shell">
+
+  <!-- 日曆 -->
+  <div class="page" id="page-calendar">
+    <div class="cal-head">
+      <div class="cal-nav">
+        <div class="cal-nav-btn" id="cal-prev">‹</div>
+        <div class="title" id="cal-title"></div>
+        <div class="cal-nav-btn" id="cal-next">›</div>
+      </div>
+      <div class="cal-today-btn" id="cal-today-btn" data-i18n="cal_today_btn">回到今天</div>
+    </div>
+    <div class="cal-weekdays" id="cal-weekdays"></div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="cal-summary-card" id="cal-summary"></div>
+  </div>
+
+  <!-- 單日紀錄 -->
+  <div class="page hidden" id="page-day">
+    <div class="day-back" id="day-back-btn"><span data-i18n="day_back">‹ 返回日曆</span></div>
+    <div class="eyebrow" id="d-date"></div>
+    <div class="h1" id="d-headline">好好吃飯</div>
+    <div class="note-card">
+      <div class="note-title" data-i18n="note_title">備註 / 心情小語</div>
+      <textarea class="note-textarea" id="d-note-input" data-i18n-ph="note_placeholder" placeholder=""></textarea>
+    </div>
+    <div class="card">
+      <div class="row-between"><span class="label-bold" data-i18n="kcal_label">熱量</span><span class="val-orange" id="d-kcal">0 <span class="sub">/ 0 kcal</span></span></div>
+      <div class="bar-track"><div class="bar-fill" id="d-kcal-bar" style="width:0%;background:var(--accent)"></div></div>
+      <div class="row-between" style="margin-top:16px"><span class="label-bold" data-i18n="protein_label">蛋白質</span><span class="val-green" id="d-protein">0 <span class="sub">/ 0 g</span></span></div>
+      <div class="bar-track"><div class="bar-fill" id="d-protein-bar" style="width:0%;background:var(--green)"></div></div>
+      <div style="margin-top:14px;display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap" id="d-macros"></div>
+      <div class="weight-row">
+        <span class="lbl" data-i18n="weight_label">體重</span>
+        <input type="number" step="0.1" inputmode="decimal" class="num-input" id="d-weight-input" placeholder="—">
+        <span class="sub">kg</span>
+        <span style="margin-left:auto;font-size:12px" id="d-weight-delta"></span>
+      </div>
+    </div>
+    <div class="btn-row">
+      <div class="btn-primary" id="open-sheet-btn" data-i18n="add_entry_btn">＋ 記一筆</div>
+      <div class="btn-secondary" id="photo-btn-label" data-i18n="add_photo_btn">📷 新增體態照</div>
+      <input type="file" accept="image/*" multiple id="day-photo-input" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+    </div>
+    <div class="section-title"><span class="t" data-i18n="day_photos_title">當天體態照</span><span class="s" id="d-photo-count"></span></div>
+    <div class="photo-grid" id="day-photo-grid"></div>
+    <div class="section-title"><span class="t" data-i18n="fav_title">常吃食物</span><span class="s" data-i18n="fav_hint">點一下快速加入</span></div>
+    <div class="chip-wrap" id="fav-chips"></div>
+    <div class="entry-title" data-i18n="entries_title">紀錄</div>
+    <div class="entry-list" id="day-entries"></div>
+  </div>
+
+  <!-- 趨勢 -->
+  <div class="page hidden" id="page-trend">
+    <div style="padding:12px 24px 0;display:flex;justify-content:space-between;align-items:center">
+      <div class="h1" style="margin:0" data-i18n="trend_title">趨勢</div>
+      <div class="toggle-pill">
+        <div class="opt active" data-chart="week" data-i18n="week">週</div>
+        <div class="opt" data-chart="month" data-i18n="month">月</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="l" data-i18n="avg_kcal">平均熱量</div><div class="v" style="color:var(--accent)" id="avg-kcal">0</div></div>
+      <div class="stat-box"><div class="l" data-i18n="avg_protein">平均蛋白質</div><div class="v" style="color:var(--green)" id="avg-protein">0g</div></div>
+      <div class="stat-box"><div class="l" data-i18n="weight_change">體重變化</div><div class="v" id="period-weight-delta">—</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-head"><span class="t" data-i18n="kcal_chart_title">熱量 (kcal)</span><span class="s"><span data-i18n="target_label">目標</span> <span id="target-kcal-lbl">0</span></span></div>
+      <div class="bars-wrap" id="kcal-bars"><div class="target-line" id="kcal-target-line"></div></div>
+      <div class="axis-labels"><span id="first-day-lbl-1"></span><span id="last-day-lbl-1"></span></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-head"><span class="t" data-i18n="protein_chart_title">蛋白質 (g)</span><span class="s"><span data-i18n="target_label">目標</span> <span id="target-protein-lbl">0</span></span></div>
+      <div class="bars-wrap short" id="protein-bars"></div>
+    </div>
+    <div class="chart-card" style="margin-bottom:24px">
+      <div class="chart-head"><span class="t" data-i18n="weight_chart_title">體重 (kg)</span><span class="s" id="weight-range-lbl"></span></div>
+      <div class="weight-chart" id="weight-chart"></div>
+      <div class="axis-labels"><span id="first-day-lbl-2"></span><span id="last-day-lbl-2"></span></div>
+    </div>
+  </div>
+
+  <!-- 體態相簿 -->
+  <div class="page hidden" id="page-photos">
+    <div style="padding:12px 24px 0"><div class="h1" style="margin:0" data-i18n="photos_title">體態相簿</div><div class="eyebrow" style="padding:2px 0 0" data-i18n="photos_subtitle">每天可以存多張，見證改變</div></div>
+    <div class="empty-msg hidden" id="photos-empty" data-i18n="photos_empty">還沒有體態照。進入任何一天按「新增體態照」上傳第一張。</div>
+    <div class="photo-grid" id="photo-grid"></div>
+  </div>
+
+  <!-- 單日照片檢視 -->
+  <div class="page hidden" id="page-photo-day">
+    <div class="day-back" id="photoday-back-btn"><span data-i18n="photoday_back">‹ 返回相簿</span></div>
+    <div class="h1" id="pd-date-title" style="margin-top:6px"></div>
+    <div class="photo-grid" id="photoday-grid"></div>
+  </div>
+
+  <!-- 設定 -->
+  <div class="page hidden" id="page-settings">
+    <div style="padding:12px 24px 0"><div class="h1" style="margin:0" data-i18n="settings_title">目標設定</div></div>
+    <div class="settings-card">
+      <div class="settings-row"><span class="lbl" data-i18n="daily_kcal">每日熱量</span><span><input type="number" class="settings-input" id="set-kcal"> <span class="unit">kcal</span></span></div>
+      <div class="settings-row"><span class="lbl" data-i18n="daily_protein">每日蛋白質</span><span><input type="number" class="settings-input" id="set-protein"> <span class="unit">g</span></span></div>
+      <div class="settings-row"><span class="lbl" data-i18n="daily_carb">每日碳水</span><span><input type="number" class="settings-input" id="set-carbs"> <span class="unit">g</span></span></div>
+      <div class="settings-row"><span class="lbl" data-i18n="daily_fat">每日脂肪</span><span><input type="number" class="settings-input" id="set-fat"> <span class="unit">g</span></span></div>
+    </div>
+
+    <div class="entry-title" data-i18n="language_title">語言</div>
+    <div class="settings-card">
+      <div class="settings-row" style="border-bottom:none">
+        <span class="lbl" data-i18n="language_title">語言</span>
+        <select class="settings-select" id="lang-select">
+          <option value="zh-TW">繁體中文</option>
+          <option value="zh-CN">简体中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="pt">Português</option>
+          <option value="ar">العربية</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="entry-title" data-i18n="theme_title">外觀主題</div>
+    <div class="settings-card">
+      <div class="theme-row" id="theme-row"></div>
+    </div>
+
+    <div class="entry-title" data-i18n="fav_manage_title">常吃食物管理</div>
+    <div class="settings-card" id="fav-manage-card"></div>
+    <div class="danger-btn" id="reset-btn" data-i18n="reset_btn">清除所有示範資料 / 重設 App</div>
+    <div style="height:24px"></div>
+  </div>
+
+  <div class="tabbar">
+    <div class="item active" data-tab="calendar" data-i18n="tab_calendar">日曆</div>
+    <div class="item" data-tab="trend" data-i18n="tab_trend">趨勢</div>
+    <div class="item" data-tab="photos" data-i18n="tab_photos">體態相簿</div>
+    <div class="item" data-tab="settings" data-i18n="tab_settings">設定</div>
+  </div>
+</div>
+
+<!-- 記一筆 sheet -->
+<div class="sheet-backdrop hidden" id="sheet-backdrop"></div>
+<div class="sheet hidden" id="sheet">
+  <div class="sheet-head"><span class="t" data-i18n="sheet_title">記一筆</span><div class="x-btn" id="close-sheet-btn">×</div></div>
+  <div class="toggle-pill" style="margin-top:14px">
+    <div class="opt active" data-ftype="food" style="flex:1;text-align:center" data-i18n="food_tab">飲食</div>
+    <div class="opt" data-ftype="exercise" style="flex:1;text-align:center" data-i18n="exercise_tab">運動</div>
+  </div>
+  <input class="sheet-input" id="f-name" placeholder="">
+  <div class="sheet-grid">
+    <div class="sheet-field"><div class="fl" id="f-kcal-label">熱量 kcal</div><input type="number" inputmode="decimal" step="0.1" id="f-kcal" placeholder="0"></div>
+    <div class="sheet-field" id="f-p-wrap"><div class="fl" data-i18n="protein_field">蛋白質 g</div><input type="number" inputmode="decimal" step="0.1" id="f-p" placeholder="0"></div>
+    <div class="sheet-field" id="f-c-wrap"><div class="fl" data-i18n="carb_field">碳水 g</div><input type="number" inputmode="decimal" step="0.1" id="f-c" placeholder="0"></div>
+    <div class="sheet-field" id="f-f-wrap"><div class="fl" data-i18n="fat_field">脂肪 g</div><input type="number" inputmode="decimal" step="0.1" id="f-f" placeholder="0"></div>
+  </div>
+  <div class="fav-toggle" id="fav-toggle-row"><div class="fav-check" id="fav-check"></div><span data-i18n="add_fav_checkbox">加入常吃食物</span></div>
+  <div class="submit-btn" id="submit-entry-btn" style="background:var(--disabled)" data-i18n="add_entry_confirm">加入紀錄</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var STORE_KEY = 'diet-app-v3';
+
+  // ==================== i18n ====================
+  var STRINGS = {
+    'zh-TW': {
+      tab_calendar: '日曆', tab_trend: '趨勢', tab_photos: '體態相簿', tab_settings: '設定',
+      cal_today_btn: '回到今天',
+      cal_summary: '本月有 {days} 天記錄飲食{photoPart}。點任何日期可以查看或補登那天的紀錄。',
+      cal_summary_photo_part: '，累積 {n} 張體態照',
+      day_back: '‹ 返回日曆', day_today_suffix: ' · 今天',
+      headline_today: '今天也好好吃飯', headline_other: '補登這一天',
+      note_title: '備註 / 心情小語', note_placeholder: '寫點什麼...記錄今天的心情或想法',
+      kcal_label: '熱量', protein_label: '蛋白質', carb_label: '碳水', fat_label: '脂肪', exercise_label: '運動',
+      weight_label: '體重', weight_flat: '與上次持平',
+      add_entry_btn: '＋ 記一筆', add_photo_btn: '📷 新增體態照',
+      day_photos_title: '當天體態照', photo_count_suffix: '張',
+      fav_title: '常吃食物', fav_hint: '點一下快速加入',
+      entries_title: '紀錄', entries_empty: '還沒有紀錄，按「＋ 記一筆」開始吧',
+      trend_title: '趨勢', week: '週', month: '月',
+      avg_kcal: '平均熱量', avg_protein: '平均蛋白質', weight_change: '體重變化',
+      kcal_chart_title: '熱量 (kcal)', target_label: '目標', protein_chart_title: '蛋白質 (g)', weight_chart_title: '體重 (kg)', no_data: '尚無資料',
+      photos_title: '體態相簿', photos_subtitle: '每天可以存多張，見證改變',
+      photos_empty: '還沒有體態照。進入任何一天按「新增體態照」上傳第一張。',
+      photoday_back: '‹ 返回相簿',
+      settings_title: '目標設定', daily_kcal: '每日熱量', daily_protein: '每日蛋白質', daily_carb: '每日碳水', daily_fat: '每日脂肪',
+      language_title: '語言', theme_title: '外觀主題',
+      fav_manage_title: '常吃食物管理', fav_manage_hint: '記一筆時勾選「加入常吃」即可新增',
+      reset_btn: '清除所有示範資料 / 重設 App',
+      reset_confirm: '確定要清除所有資料嗎？這會刪除目前所有的飲食紀錄、體重、照片與常吃食物，且無法復原。',
+      sheet_title: '記一筆', food_tab: '飲食', exercise_tab: '運動',
+      food_name_ph: '吃了什麼？例如：雞胸肉便當', exercise_name_ph: '做了什麼運動？例如：慢跑 30 分',
+      kcal_field: '熱量 kcal', burn_field: '消耗 kcal', protein_field: '蛋白質 g', carb_field: '碳水 g', fat_field: '脂肪 g',
+      add_fav_checkbox: '加入常吃食物', add_entry_confirm: '加入紀錄',
+      photo_error: '讀取照片時發生錯誤，請再試一次。',
+      photo_error2: '新增照片失敗，請再試一次。若持續發生，可能是照片太大或格式不支援。',
+      theme_cream: '奶油簡約', theme_dark: '深色摩登', theme_mint: '薄荷清新', theme_forest: '森林木質', theme_pastel: '粉彩夢幻', theme_ocean: '海洋藍調', theme_indigo: '午夜靛藍', theme_charcoal: '炭黑金屬', theme_deepsea: '深海漸層', theme_volcanic: '熔岩暗夜'
+    },
+    'zh-CN': {
+      tab_calendar: '日历', tab_trend: '趋势', tab_photos: '体态相册', tab_settings: '设置',
+      cal_today_btn: '回到今天',
+      cal_summary: '本月有 {days} 天记录饮食{photoPart}。点任意日期可以查看或补登那天的记录。',
+      cal_summary_photo_part: '，累计 {n} 张体态照',
+      day_back: '‹ 返回日历', day_today_suffix: ' · 今天',
+      headline_today: '今天也好好吃饭', headline_other: '补登这一天',
+      note_title: '备注 / 心情小语', note_placeholder: '写点什么...记录今天的心情或想法',
+      kcal_label: '热量', protein_label: '蛋白质', carb_label: '碳水', fat_label: '脂肪', exercise_label: '运动',
+      weight_label: '体重', weight_flat: '与上次持平',
+      add_entry_btn: '＋ 记一笔', add_photo_btn: '📷 新增体态照',
+      day_photos_title: '当天体态照', photo_count_suffix: '张',
+      fav_title: '常吃食物', fav_hint: '点一下快速加入',
+      entries_title: '记录', entries_empty: '还没有记录，点「＋ 记一笔」开始吧',
+      trend_title: '趋势', week: '周', month: '月',
+      avg_kcal: '平均热量', avg_protein: '平均蛋白质', weight_change: '体重变化',
+      kcal_chart_title: '热量 (kcal)', target_label: '目标', protein_chart_title: '蛋白质 (g)', weight_chart_title: '体重 (kg)', no_data: '尚无数据',
+      photos_title: '体态相册', photos_subtitle: '每天可以存多张，见证改变',
+      photos_empty: '还没有体态照。进入任意一天点「新增体态照」上传第一张。',
+      photoday_back: '‹ 返回相册',
+      settings_title: '目标设置', daily_kcal: '每日热量', daily_protein: '每日蛋白质', daily_carb: '每日碳水', daily_fat: '每日脂肪',
+      language_title: '语言', theme_title: '外观主题',
+      fav_manage_title: '常吃食物管理', fav_manage_hint: '记一笔时勾选「加入常吃」即可新增',
+      reset_btn: '清除所有示例数据 / 重置 App',
+      reset_confirm: '确定要清除所有数据吗？这会删除目前所有的饮食记录、体重、照片与常吃食物，且无法恢复。',
+      sheet_title: '记一笔', food_tab: '饮食', exercise_tab: '运动',
+      food_name_ph: '吃了什么？例如：鸡胸肉便当', exercise_name_ph: '做了什么运动？例如：慢跑 30 分',
+      kcal_field: '热量 kcal', burn_field: '消耗 kcal', protein_field: '蛋白质 g', carb_field: '碳水 g', fat_field: '脂肪 g',
+      add_fav_checkbox: '加入常吃食物', add_entry_confirm: '加入记录',
+      photo_error: '读取照片时发生错误，请再试一次。',
+      photo_error2: '新增照片失败，请再试一次。若持续发生，可能是照片太大或格式不支持。',
+      theme_cream: '奶油简约', theme_dark: '深色摩登', theme_mint: '薄荷清新', theme_forest: '森林木质', theme_pastel: '粉彩梦幻', theme_ocean: '海洋蓝调', theme_indigo: '午夜靛蓝', theme_charcoal: '炭黑金属', theme_deepsea: '深海渐层', theme_volcanic: '熔岩暗夜'
+    },
+    en: {
+      tab_calendar: 'Calendar', tab_trend: 'Trends', tab_photos: 'Photos', tab_settings: 'Settings',
+      cal_today_btn: 'Today',
+      cal_summary: '{days} day(s) logged this month{photoPart}. Tap any date to view or back-fill that day.',
+      cal_summary_photo_part: ', {n} photo(s) total',
+      day_back: '‹ Back to calendar', day_today_suffix: ' · Today',
+      headline_today: 'Eat well today', headline_other: 'Back-fill this day',
+      note_title: 'Notes / Mood', note_placeholder: "Write anything... today's mood or thoughts",
+      kcal_label: 'Calories', protein_label: 'Protein', carb_label: 'Carbs', fat_label: 'Fat', exercise_label: 'Exercise',
+      weight_label: 'Weight', weight_flat: 'Same as last time',
+      add_entry_btn: '＋ Add entry', add_photo_btn: '📷 Add photo',
+      day_photos_title: 'Photos today', photo_count_suffix: '',
+      fav_title: 'Favorites', fav_hint: 'Tap to add quickly',
+      entries_title: 'Entries', entries_empty: 'No entries yet — tap “＋ Add entry” to start',
+      trend_title: 'Trends', week: 'Week', month: 'Month',
+      avg_kcal: 'Avg calories', avg_protein: 'Avg protein', weight_change: 'Weight change',
+      kcal_chart_title: 'Calories (kcal)', target_label: 'Target', protein_chart_title: 'Protein (g)', weight_chart_title: 'Weight (kg)', no_data: 'No data yet',
+      photos_title: 'Photos', photos_subtitle: 'Save several a day and watch the change',
+      photos_empty: 'No photos yet. Open any day and tap “Add photo” to upload your first one.',
+      photoday_back: '‹ Back to photos',
+      settings_title: 'Targets', daily_kcal: 'Daily calories', daily_protein: 'Daily protein', daily_carb: 'Daily carbs', daily_fat: 'Daily fat',
+      language_title: 'Language', theme_title: 'Theme',
+      fav_manage_title: 'Manage favorites', fav_manage_hint: 'Check "add to favorites" when logging an entry',
+      reset_btn: 'Clear sample data / Reset app',
+      reset_confirm: 'Clear all data? This deletes all food entries, weight, photos and favorites and cannot be undone.',
+      sheet_title: 'Add entry', food_tab: 'Food', exercise_tab: 'Exercise',
+      food_name_ph: 'What did you eat? e.g. Chicken breast bento', exercise_name_ph: 'What exercise? e.g. 30 min jog',
+      kcal_field: 'Calories', burn_field: 'Burned kcal', protein_field: 'Protein g', carb_field: 'Carbs g', fat_field: 'Fat g',
+      add_fav_checkbox: 'Add to favorites', add_entry_confirm: 'Add entry',
+      photo_error: 'Something went wrong reading that photo, please try again.',
+      photo_error2: 'Could not add photo, please try again. It may be too large or an unsupported format.',
+      theme_cream: 'Cream', theme_dark: 'Dark Modern', theme_mint: 'Mint Fresh', theme_forest: 'Forest Wood', theme_pastel: 'Pastel Dream', theme_ocean: 'Ocean Blue', theme_indigo: 'Midnight Indigo', theme_charcoal: 'Charcoal Metal', theme_deepsea: 'Deep Sea', theme_volcanic: 'Volcanic Night'
+    },
+    ja: {
+      tab_calendar: 'カレンダー', tab_trend: '傾向', tab_photos: '体型アルバム', tab_settings: '設定',
+      cal_today_btn: '今日へ',
+      cal_summary: '今月は{days}日記録があります{photoPart}。日付をタップすると記録の確認・追加ができます。',
+      cal_summary_photo_part: '、写真は合計{n}枚',
+      day_back: '‹ カレンダーへ戻る', day_today_suffix: ' ・ 今日',
+      headline_today: '今日もしっかり食べよう', headline_other: 'この日を記録する',
+      note_title: 'メモ / 気分', note_placeholder: '今日の気分や思ったことを書いてみましょう',
+      kcal_label: 'カロリー', protein_label: 'タンパク質', carb_label: '炭水化物', fat_label: '脂質', exercise_label: '運動',
+      weight_label: '体重', weight_flat: '前回と同じ',
+      add_entry_btn: '＋ 記録を追加', add_photo_btn: '📷 体型写真を追加',
+      day_photos_title: 'この日の体型写真', photo_count_suffix: '枚',
+      fav_title: 'よく食べるもの', fav_hint: 'タップで素早く追加',
+      entries_title: '記録', entries_empty: 'まだ記録がありません。「＋ 記録を追加」から始めましょう',
+      trend_title: '傾向', week: '週', month: '月',
+      avg_kcal: '平均カロリー', avg_protein: '平均タンパク質', weight_change: '体重の変化',
+      kcal_chart_title: 'カロリー (kcal)', target_label: '目標', protein_chart_title: 'タンパク質 (g)', weight_chart_title: '体重 (kg)', no_data: 'データなし',
+      photos_title: '体型アルバム', photos_subtitle: '1日に何枚でも保存して変化を記録',
+      photos_empty: 'まだ写真がありません。日付を開いて「体型写真を追加」から最初の一枚を。',
+      photoday_back: '‹ アルバムへ戻る',
+      settings_title: '目標設定', daily_kcal: '1日のカロリー', daily_protein: '1日のタンパク質', daily_carb: '1日の炭水化物', daily_fat: '1日の脂質',
+      language_title: '言語', theme_title: 'テーマ',
+      fav_manage_title: 'よく食べるものの管理', fav_manage_hint: '記録追加時に「よく食べるものに追加」をチェック',
+      reset_btn: 'サンプルデータを消去 / アプリをリセット',
+      reset_confirm: 'すべてのデータを消去しますか？食事記録・体重・写真・よく食べるものが全て削除され、元に戻せません。',
+      sheet_title: '記録を追加', food_tab: '食事', exercise_tab: '運動',
+      food_name_ph: '何を食べましたか？例：鶏胸肉弁当', exercise_name_ph: 'どんな運動？例：ジョギング30分',
+      kcal_field: 'カロリー', burn_field: '消費 kcal', protein_field: 'タンパク質 g', carb_field: '炭水化物 g', fat_field: '脂質 g',
+      add_fav_checkbox: 'よく食べるものに追加', add_entry_confirm: '記録を追加',
+      photo_error: '写真の読み込みでエラーが発生しました。もう一度お試しください。',
+      photo_error2: '写真を追加できませんでした。もう一度お試しください。サイズが大きすぎるか非対応の形式の可能性があります。',
+      theme_cream: 'クリーム', theme_dark: 'ダークモダン', theme_mint: 'ミントフレッシュ', theme_forest: 'フォレストウッド', theme_pastel: 'パステルドリーム', theme_ocean: 'オーシャンブルー', theme_indigo: 'ミッドナイトインディゴ', theme_charcoal: 'チャコールメタル', theme_deepsea: 'ディープシー', theme_volcanic: 'ヴォルケーニックナイト'
+    },
+    ko: {
+      tab_calendar: '캘린더', tab_trend: '트렌드', tab_photos: '체형 앨범', tab_settings: '설정',
+      cal_today_btn: '오늘로',
+      cal_summary: '이번 달 {days}일 기록됨{photoPart}. 날짜를 눌러 확인하거나 기록을 추가하세요.',
+      cal_summary_photo_part: ', 사진 총 {n}장',
+      day_back: '‹ 캘린더로', day_today_suffix: ' · 오늘',
+      headline_today: '오늘도 잘 챙겨 먹기', headline_other: '이 날 기록하기',
+      note_title: '메모 / 기분', note_placeholder: '오늘의 기분이나 생각을 적어보세요',
+      kcal_label: '칼로리', protein_label: '단백질', carb_label: '탄수화물', fat_label: '지방', exercise_label: '운동',
+      weight_label: '체중', weight_flat: '지난번과 동일',
+      add_entry_btn: '＋ 기록 추가', add_photo_btn: '📷 체형 사진 추가',
+      day_photos_title: '이 날의 체형 사진', photo_count_suffix: '장',
+      fav_title: '자주 먹는 음식', fav_hint: '탭하면 빠르게 추가',
+      entries_title: '기록', entries_empty: '아직 기록이 없어요. "＋ 기록 추가"로 시작해보세요',
+      trend_title: '트렌드', week: '주', month: '월',
+      avg_kcal: '평균 칼로리', avg_protein: '평균 단백질', weight_change: '체중 변화',
+      kcal_chart_title: '칼로리 (kcal)', target_label: '목표', protein_chart_title: '단백질 (g)', weight_chart_title: '체중 (kg)', no_data: '데이터 없음',
+      photos_title: '체형 앨범', photos_subtitle: '하루에 여러 장 저장하고 변화를 확인하세요',
+      photos_empty: '아직 사진이 없어요. 아무 날짜나 열어 "체형 사진 추가"로 첫 장을 올려보세요.',
+      photoday_back: '‹ 앨범으로',
+      settings_title: '목표 설정', daily_kcal: '일일 칼로리', daily_protein: '일일 단백질', daily_carb: '일일 탄수화물', daily_fat: '일일 지방',
+      language_title: '언어', theme_title: '테마',
+      fav_manage_title: '자주 먹는 음식 관리', fav_manage_hint: '기록 추가 시 "자주 먹는 음식에 추가" 체크',
+      reset_btn: '샘플 데이터 지우기 / 앱 초기화',
+      reset_confirm: '모든 데이터를 삭제할까요? 현재 모든 식사 기록, 체중, 사진, 자주 먹는 음식이 삭제되며 되돌릴 수 없습니다.',
+      sheet_title: '기록 추가', food_tab: '식사', exercise_tab: '운동',
+      food_name_ph: '무엇을 먹었나요? 예: 닭가슴살 도시락', exercise_name_ph: '어떤 운동을 했나요? 예: 조깅 30분',
+      kcal_field: '칼로리', burn_field: '소모 kcal', protein_field: '단백질 g', carb_field: '탄수화물 g', fat_field: '지방 g',
+      add_fav_checkbox: '자주 먹는 음식에 추가', add_entry_confirm: '기록 추가',
+      photo_error: '사진을 읽는 중 오류가 발생했습니다. 다시 시도해주세요.',
+      photo_error2: '사진을 추가하지 못했습니다. 다시 시도해주세요. 파일이 너무 크거나 지원하지 않는 형식일 수 있습니다.',
+      theme_cream: '크림', theme_dark: '다크 모던', theme_mint: '민트 프레시', theme_forest: '포레스트 우드', theme_pastel: '파스텔 드림', theme_ocean: '오션 블루', theme_indigo: '미드나잇 인디고', theme_charcoal: '차콜 메탈', theme_deepsea: '딥 씨', theme_volcanic: '볼케이닉 나이트'
+    },
+    es: {
+      tab_calendar: 'Calendario', tab_trend: 'Tendencias', tab_photos: 'Fotos', tab_settings: 'Ajustes',
+      cal_today_btn: 'Hoy',
+      cal_summary: '{days} día(s) registrados este mes{photoPart}. Toca cualquier fecha para ver o completar ese día.',
+      cal_summary_photo_part: ', {n} foto(s) en total',
+      day_back: '‹ Volver al calendario', day_today_suffix: ' · Hoy',
+      headline_today: 'Come bien hoy', headline_other: 'Completar este día',
+      note_title: 'Notas / Estado de ánimo', note_placeholder: 'Escribe algo... tu ánimo o pensamientos de hoy',
+      kcal_label: 'Calorías', protein_label: 'Proteína', carb_label: 'Carbos', fat_label: 'Grasa', exercise_label: 'Ejercicio',
+      weight_label: 'Peso', weight_flat: 'Igual que la última vez',
+      add_entry_btn: '＋ Añadir registro', add_photo_btn: '📷 Añadir foto',
+      day_photos_title: 'Fotos de hoy', photo_count_suffix: '',
+      fav_title: 'Favoritos', fav_hint: 'Toca para añadir rápido',
+      entries_title: 'Registros', entries_empty: 'Aún no hay registros — toca “＋ Añadir registro”',
+      trend_title: 'Tendencias', week: 'Semana', month: 'Mes',
+      avg_kcal: 'Calorías prom.', avg_protein: 'Proteína prom.', weight_change: 'Cambio de peso',
+      kcal_chart_title: 'Calorías (kcal)', target_label: 'Meta', protein_chart_title: 'Proteína (g)', weight_chart_title: 'Peso (kg)', no_data: 'Sin datos',
+      photos_title: 'Fotos', photos_subtitle: 'Guarda varias al día y observa el cambio',
+      photos_empty: 'Aún no hay fotos. Abre cualquier día y toca “Añadir foto”.',
+      photoday_back: '‹ Volver a fotos',
+      settings_title: 'Objetivos', daily_kcal: 'Calorías diarias', daily_protein: 'Proteína diaria', daily_carb: 'Carbos diarios', daily_fat: 'Grasa diaria',
+      language_title: 'Idioma', theme_title: 'Tema',
+      fav_manage_title: 'Gestionar favoritos', fav_manage_hint: 'Marca "añadir a favoritos" al registrar',
+      reset_btn: 'Borrar datos de ejemplo / Reiniciar app',
+      reset_confirm: '¿Borrar todos los datos? Esto elimina registros, peso, fotos y favoritos, sin posibilidad de deshacer.',
+      sheet_title: 'Añadir registro', food_tab: 'Comida', exercise_tab: 'Ejercicio',
+      food_name_ph: '¿Qué comiste? p. ej. Pechuga de pollo', exercise_name_ph: '¿Qué ejercicio? p. ej. Correr 30 min',
+      kcal_field: 'Calorías', burn_field: 'kcal quemadas', protein_field: 'Proteína g', carb_field: 'Carbos g', fat_field: 'Grasa g',
+      add_fav_checkbox: 'Añadir a favoritos', add_entry_confirm: 'Añadir registro',
+      photo_error: 'Ocurrió un error al leer la foto, inténtalo de nuevo.',
+      photo_error2: 'No se pudo añadir la foto. Puede ser demasiado grande o un formato no compatible.',
+      theme_cream: 'Crema', theme_dark: 'Oscuro moderno', theme_mint: 'Menta fresca', theme_forest: 'Bosque', theme_pastel: 'Sueño pastel', theme_ocean: 'Azul océano', theme_indigo: 'Índigo medianoche', theme_charcoal: 'Carbón metálico', theme_deepsea: 'Mar profundo', theme_volcanic: 'Noche volcánica'
+    },
+    fr: {
+      tab_calendar: 'Calendrier', tab_trend: 'Tendances', tab_photos: 'Photos', tab_settings: 'Réglages',
+      cal_today_btn: "Aujourd'hui",
+      cal_summary: '{days} jour(s) enregistré(s) ce mois-ci{photoPart}. Touchez une date pour voir ou compléter ce jour.',
+      cal_summary_photo_part: ', {n} photo(s) au total',
+      day_back: '‹ Retour au calendrier', day_today_suffix: " · Aujourd'hui",
+      headline_today: 'Bien manger aujourd’hui', headline_other: 'Compléter ce jour',
+      note_title: 'Notes / Humeur', note_placeholder: "Écrivez quelque chose... votre humeur ou vos pensées",
+      kcal_label: 'Calories', protein_label: 'Protéines', carb_label: 'Glucides', fat_label: 'Lipides', exercise_label: 'Exercice',
+      weight_label: 'Poids', weight_flat: 'Identique à la dernière fois',
+      add_entry_btn: '＋ Ajouter', add_photo_btn: '📷 Ajouter une photo',
+      day_photos_title: 'Photos du jour', photo_count_suffix: '',
+      fav_title: 'Favoris', fav_hint: 'Touchez pour ajouter vite',
+      entries_title: 'Entrées', entries_empty: 'Aucune entrée — touchez « ＋ Ajouter »',
+      trend_title: 'Tendances', week: 'Semaine', month: 'Mois',
+      avg_kcal: 'Calories moy.', avg_protein: 'Protéines moy.', weight_change: 'Variation de poids',
+      kcal_chart_title: 'Calories (kcal)', target_label: 'Objectif', protein_chart_title: 'Protéines (g)', weight_chart_title: 'Poids (kg)', no_data: 'Aucune donnée',
+      photos_title: 'Photos', photos_subtitle: 'Enregistrez-en plusieurs par jour pour suivre l’évolution',
+      photos_empty: 'Aucune photo. Ouvrez un jour et touchez « Ajouter une photo ».',
+      photoday_back: '‹ Retour aux photos',
+      settings_title: 'Objectifs', daily_kcal: 'Calories/jour', daily_protein: 'Protéines/jour', daily_carb: 'Glucides/jour', daily_fat: 'Lipides/jour',
+      language_title: 'Langue', theme_title: 'Thème',
+      fav_manage_title: 'Gérer les favoris', fav_manage_hint: 'Cochez « ajouter aux favoris » en enregistrant',
+      reset_btn: "Effacer les données d'exemple / Réinitialiser",
+      reset_confirm: 'Effacer toutes les données ? Cela supprime repas, poids, photos et favoris, sans retour possible.',
+      sheet_title: 'Ajouter une entrée', food_tab: 'Repas', exercise_tab: 'Exercice',
+      food_name_ph: 'Qu’avez-vous mangé ? ex. blanc de poulet', exercise_name_ph: 'Quel exercice ? ex. 30 min de course',
+      kcal_field: 'Calories', burn_field: 'kcal brûlées', protein_field: 'Protéines g', carb_field: 'Glucides g', fat_field: 'Lipides g',
+      add_fav_checkbox: 'Ajouter aux favoris', add_entry_confirm: 'Ajouter',
+      photo_error: 'Erreur lors de la lecture de la photo, réessayez.',
+      photo_error2: "Impossible d'ajouter la photo. Elle est peut-être trop grande ou dans un format non pris en charge.",
+      theme_cream: 'Crème', theme_dark: 'Sombre moderne', theme_mint: 'Menthe fraîche', theme_forest: 'Forêt bois', theme_pastel: 'Rêve pastel', theme_ocean: 'Bleu océan', theme_indigo: 'Indigo de minuit', theme_charcoal: 'Charbon métallique', theme_deepsea: 'Mer profonde', theme_volcanic: 'Nuit volcanique'
+    },
+    de: {
+      tab_calendar: 'Kalender', tab_trend: 'Trends', tab_photos: 'Fotos', tab_settings: 'Einstellungen',
+      cal_today_btn: 'Heute',
+      cal_summary: 'Diesen Monat {days} Tag(e) erfasst{photoPart}. Tippe auf ein Datum, um es zu sehen oder nachzutragen.',
+      cal_summary_photo_part: ', insgesamt {n} Foto(s)',
+      day_back: '‹ Zurück zum Kalender', day_today_suffix: ' · Heute',
+      headline_today: 'Heute gut essen', headline_other: 'Diesen Tag nachtragen',
+      note_title: 'Notizen / Stimmung', note_placeholder: 'Schreib etwas... deine Stimmung oder Gedanken heute',
+      kcal_label: 'Kalorien', protein_label: 'Protein', carb_label: 'Kohlenhydrate', fat_label: 'Fett', exercise_label: 'Sport',
+      weight_label: 'Gewicht', weight_flat: 'Gleich wie zuletzt',
+      add_entry_btn: '＋ Eintrag hinzufügen', add_photo_btn: '📷 Foto hinzufügen',
+      day_photos_title: 'Fotos von heute', photo_count_suffix: '',
+      fav_title: 'Favoriten', fav_hint: 'Antippen zum schnellen Hinzufügen',
+      entries_title: 'Einträge', entries_empty: 'Noch keine Einträge – tippe auf „＋ Eintrag hinzufügen"',
+      trend_title: 'Trends', week: 'Woche', month: 'Monat',
+      avg_kcal: 'Ø Kalorien', avg_protein: 'Ø Protein', weight_change: 'Gewichtsänderung',
+      kcal_chart_title: 'Kalorien (kcal)', target_label: 'Ziel', protein_chart_title: 'Protein (g)', weight_chart_title: 'Gewicht (kg)', no_data: 'Keine Daten',
+      photos_title: 'Fotos', photos_subtitle: 'Speichere mehrere pro Tag und beobachte den Fortschritt',
+      photos_empty: 'Noch keine Fotos. Öffne einen Tag und tippe auf „Foto hinzufügen".',
+      photoday_back: '‹ Zurück zu Fotos',
+      settings_title: 'Ziele', daily_kcal: 'Kalorien/Tag', daily_protein: 'Protein/Tag', daily_carb: 'Kohlenhydrate/Tag', daily_fat: 'Fett/Tag',
+      language_title: 'Sprache', theme_title: 'Design',
+      fav_manage_title: 'Favoriten verwalten', fav_manage_hint: 'Beim Eintragen "Zu Favoriten" ankreuzen',
+      reset_btn: 'Beispieldaten löschen / App zurücksetzen',
+      reset_confirm: 'Alle Daten löschen? Damit werden alle Einträge, Gewicht, Fotos und Favoriten unwiderruflich gelöscht.',
+      sheet_title: 'Eintrag hinzufügen', food_tab: 'Essen', exercise_tab: 'Sport',
+      food_name_ph: 'Was hast du gegessen? z. B. Hähnchenbrust', exercise_name_ph: 'Welcher Sport? z. B. 30 Min. Joggen',
+      kcal_field: 'Kalorien', burn_field: 'Verbrannte kcal', protein_field: 'Protein g', carb_field: 'Kohlenhydrate g', fat_field: 'Fett g',
+      add_fav_checkbox: 'Zu Favoriten hinzufügen', add_entry_confirm: 'Eintrag hinzufügen',
+      photo_error: 'Beim Lesen des Fotos ist ein Fehler aufgetreten. Bitte erneut versuchen.',
+      photo_error2: 'Foto konnte nicht hinzugefügt werden. Es ist evtl. zu groß oder ein nicht unterstütztes Format.',
+      theme_cream: 'Creme', theme_dark: 'Dunkel Modern', theme_mint: 'Minze Frisch', theme_forest: 'Waldholz', theme_pastel: 'Pastelltraum', theme_ocean: 'Ozeanblau', theme_indigo: 'Mitternachtsindigo', theme_charcoal: 'Anthrazit Metall', theme_deepsea: 'Tiefsee', theme_volcanic: 'Vulkannacht'
+    },
+    pt: {
+      tab_calendar: 'Calendário', tab_trend: 'Tendências', tab_photos: 'Fotos', tab_settings: 'Ajustes',
+      cal_today_btn: 'Hoje',
+      cal_summary: '{days} dia(s) registrado(s) este mês{photoPart}. Toque numa data para ver ou preencher esse dia.',
+      cal_summary_photo_part: ', {n} foto(s) no total',
+      day_back: '‹ Voltar ao calendário', day_today_suffix: ' · Hoje',
+      headline_today: 'Coma bem hoje', headline_other: 'Preencher este dia',
+      note_title: 'Notas / Humor', note_placeholder: 'Escreva algo... seu humor ou pensamentos de hoje',
+      kcal_label: 'Calorias', protein_label: 'Proteína', carb_label: 'Carboidratos', fat_label: 'Gordura', exercise_label: 'Exercício',
+      weight_label: 'Peso', weight_flat: 'Igual à última vez',
+      add_entry_btn: '＋ Adicionar registro', add_photo_btn: '📷 Adicionar foto',
+      day_photos_title: 'Fotos de hoje', photo_count_suffix: '',
+      fav_title: 'Favoritos', fav_hint: 'Toque para adicionar rápido',
+      entries_title: 'Registros', entries_empty: 'Ainda sem registros — toque em "＋ Adicionar registro"',
+      trend_title: 'Tendências', week: 'Semana', month: 'Mês',
+      avg_kcal: 'Média de calorias', avg_protein: 'Média de proteína', weight_change: 'Variação de peso',
+      kcal_chart_title: 'Calorias (kcal)', target_label: 'Meta', protein_chart_title: 'Proteína (g)', weight_chart_title: 'Peso (kg)', no_data: 'Sem dados',
+      photos_title: 'Fotos', photos_subtitle: 'Guarde várias por dia e acompanhe a mudança',
+      photos_empty: 'Ainda sem fotos. Abra qualquer dia e toque em "Adicionar foto".',
+      photoday_back: '‹ Voltar às fotos',
+      settings_title: 'Metas', daily_kcal: 'Calorias diárias', daily_protein: 'Proteína diária', daily_carb: 'Carboidratos diários', daily_fat: 'Gordura diária',
+      language_title: 'Idioma', theme_title: 'Tema',
+      fav_manage_title: 'Gerenciar favoritos', fav_manage_hint: 'Marque "adicionar aos favoritos" ao registrar',
+      reset_btn: 'Limpar dados de exemplo / Redefinir app',
+      reset_confirm: 'Apagar todos os dados? Isso remove registros, peso, fotos e favoritos, sem possibilidade de desfazer.',
+      sheet_title: 'Adicionar registro', food_tab: 'Comida', exercise_tab: 'Exercício',
+      food_name_ph: 'O que você comeu? ex.: peito de frango', exercise_name_ph: 'Qual exercício? ex.: corrida de 30 min',
+      kcal_field: 'Calorias', burn_field: 'kcal queimadas', protein_field: 'Proteína g', carb_field: 'Carboidratos g', fat_field: 'Gordura g',
+      add_fav_checkbox: 'Adicionar aos favoritos', add_entry_confirm: 'Adicionar registro',
+      photo_error: 'Ocorreu um erro ao ler a foto, tente novamente.',
+      photo_error2: 'Não foi possível adicionar a foto. Pode ser grande demais ou um formato não suportado.',
+      theme_cream: 'Creme', theme_dark: 'Escuro moderno', theme_mint: 'Menta fresca', theme_forest: 'Floresta', theme_pastel: 'Sonho pastel', theme_ocean: 'Azul oceano', theme_indigo: 'Índigo da meia-noite', theme_charcoal: 'Carvão metálico', theme_deepsea: 'Mar profundo', theme_volcanic: 'Noite vulcânica'
+    },
+    ar: {
+      tab_calendar: 'التقويم', tab_trend: 'الاتجاهات', tab_photos: 'ألبوم الجسم', tab_settings: 'الإعدادات',
+      cal_today_btn: 'اليوم',
+      cal_summary: 'تم تسجيل {days} يوم هذا الشهر{photoPart}. اضغط على أي تاريخ لعرض أو إضافة سجل ذلك اليوم.',
+      cal_summary_photo_part: '، بإجمالي {n} صورة',
+      day_back: '‹ العودة إلى التقويم', day_today_suffix: ' · اليوم',
+      headline_today: 'كُل جيداً اليوم', headline_other: 'إضافة سجل لهذا اليوم',
+      note_title: 'ملاحظات / المزاج', note_placeholder: 'اكتب شيئاً... مزاجك أو أفكارك اليوم',
+      kcal_label: 'السعرات', protein_label: 'البروتين', carb_label: 'الكربوهيدرات', fat_label: 'الدهون', exercise_label: 'تمرين',
+      weight_label: 'الوزن', weight_flat: 'كما هو منذ آخر مرة',
+      add_entry_btn: '＋ إضافة سجل', add_photo_btn: '📷 إضافة صورة',
+      day_photos_title: 'صور اليوم', photo_count_suffix: '',
+      fav_title: 'المفضلة', fav_hint: 'اضغط للإضافة السريعة',
+      entries_title: 'السجلات', entries_empty: 'لا توجد سجلات بعد — اضغط "＋ إضافة سجل"',
+      trend_title: 'الاتجاهات', week: 'أسبوع', month: 'شهر',
+      avg_kcal: 'متوسط السعرات', avg_protein: 'متوسط البروتين', weight_change: 'تغير الوزن',
+      kcal_chart_title: 'السعرات (kcal)', target_label: 'الهدف', protein_chart_title: 'البروتين (g)', weight_chart_title: 'الوزن (kg)', no_data: 'لا توجد بيانات',
+      photos_title: 'ألبوم الجسم', photos_subtitle: 'احفظ عدة صور يومياً وتابع التغيّر',
+      photos_empty: 'لا توجد صور بعد. افتح أي يوم واضغط "إضافة صورة".',
+      photoday_back: '‹ العودة إلى الألبوم',
+      settings_title: 'الأهداف', daily_kcal: 'السعرات اليومية', daily_protein: 'البروتين اليومي', daily_carb: 'الكربوهيدرات اليومية', daily_fat: 'الدهون اليومية',
+      language_title: 'اللغة', theme_title: 'المظهر',
+      fav_manage_title: 'إدارة المفضلة', fav_manage_hint: 'اختر "إضافة إلى المفضلة" عند تسجيل عنصر',
+      reset_btn: 'مسح البيانات التجريبية / إعادة ضبط التطبيق',
+      reset_confirm: 'هل تريد مسح جميع البيانات؟ سيؤدي هذا لحذف كل السجلات والوزن والصور والمفضلة نهائياً.',
+      sheet_title: 'إضافة سجل', food_tab: 'طعام', exercise_tab: 'تمرين',
+      food_name_ph: 'ماذا أكلت؟ مثال: صدر دجاج', exercise_name_ph: 'أي تمرين؟ مثال: جري 30 دقيقة',
+      kcal_field: 'السعرات', burn_field: 'سعرات محروقة', protein_field: 'بروتين g', carb_field: 'كربوهيدرات g', fat_field: 'دهون g',
+      add_fav_checkbox: 'إضافة إلى المفضلة', add_entry_confirm: 'إضافة السجل',
+      photo_error: 'حدث خطأ أثناء قراءة الصورة، حاول مرة أخرى.',
+      photo_error2: 'تعذّرت إضافة الصورة. قد تكون كبيرة جداً أو بصيغة غير مدعومة.',
+      theme_cream: 'كريمي', theme_dark: 'داكن عصري', theme_mint: 'نعناع منعش', theme_forest: 'غابة خشبية', theme_pastel: 'حلم باستيل', theme_ocean: 'أزرق محيطي', theme_indigo: 'نيلي منتصف الليل', theme_charcoal: 'فحمي معدني', theme_deepsea: 'أعماق البحر', theme_volcanic: 'ليل بركاني'
+    }
+  };
+
+  var WEEKDAY_HEADER = {
+    'zh-TW': ['日','一','二','三','四','五','六'], 'zh-CN': ['日','一','二','三','四','五','六'],
+    en: ['S','M','T','W','T','F','S'], ja: ['日','月','火','水','木','金','土'], ko: ['일','월','화','수','목','금','토'],
+    es: ['D','L','M','X','J','V','S'], fr: ['D','L','M','M','J','V','S'], de: ['S','M','D','M','D','F','S'],
+    pt: ['D','S','T','Q','Q','S','S'], ar: ['ح','ن','ث','ر','خ','ج','س']
+  };
+  var WEEKDAY_DAY = {
+    'zh-TW': ['週日','週一','週二','週三','週四','週五','週六'], 'zh-CN': ['周日','周一','周二','周三','周四','周五','周六'],
+    en: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], ja: ['日','月','火','水','木','金','土'], ko: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'],
+    es: ['dom','lun','mar','mié','jue','vie','sáb'], fr: ['dim','lun','mar','mer','jeu','ven','sam'], de: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+    pt: ['dom','seg','ter','qua','qui','sex','sáb'], ar: ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت']
+  };
+  var MONTH_NAMES = {
+    en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    es: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
+    fr: ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+    de: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+    pt: ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']
+  };
+  var THEMES = ['cream', 'dark', 'mint', 'forest', 'pastel', 'ocean', 'indigo', 'charcoal', 'deepsea', 'volcanic'];
+  var THEME_DOT_COLOR = {
+    cream: '#b56a45', dark: '#e0955f', mint: '#2f9e7a', forest: '#8a6a3e', pastel: '#d97ba0', ocean: '#2f7ea8',
+    indigo: 'linear-gradient(135deg,#8b7bdb,#241f3d)', charcoal: 'linear-gradient(135deg,#cda45e,#1a1a1a)',
+    deepsea: 'linear-gradient(135deg,#34b3c9,#04121c)', volcanic: 'linear-gradient(135deg,#ff6b3d,#1a0e0d)'
+  };
+
+  function t(key, vars) {
+    var lang = state.lang || 'zh-TW';
+    var s = (STRINGS[lang] && STRINGS[lang][key] != null) ? STRINGS[lang][key] : (STRINGS['zh-TW'][key] || key);
+    if (vars) {
+      Object.keys(vars).forEach(function (k) { s = s.split('{' + k + '}').join(vars[k]); });
+    }
+    return s;
+  }
+
+  function calMonthTitle(year, month0) {
+    var lang = state.lang || 'zh-TW';
+    var m = month0 + 1;
+    if (lang === 'zh-TW') return year + ' 年 ' + m + ' 月';
+    if (lang === 'zh-CN') return year + '年' + m + '月';
+    if (lang === 'ja') return year + '年' + m + '月';
+    if (lang === 'ko') return year + '년 ' + m + '월';
+    if (MONTH_NAMES[lang]) return MONTH_NAMES[lang][month0] + ' ' + year;
+    return year + '-' + pad2(m);
+  }
+
+  // ==================== 基本工具 ====================
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function keyOfDate(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  function keyFor(offset) {
+    var d = new Date();
+    d.setDate(d.getDate() - offset);
+    return keyOfDate(d);
+  }
+  function todayKey() { return keyFor(0); }
+  function parseKey(key) {
+    var parts = key.split('-').map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  var state = {
+    view: 'calendar',
+    calYear: null, calMonth: null,
+    selectedDate: null,
+    photoViewDate: null,
+    days: {},
+    favs: [],
+    targets: { kcal: 1600, protein: 130, carbs: 150, fat: 53 },
+    lang: 'zh-TW',
+    theme: 'cream',
+    sheetOpen: false,
+    fType: 'food',
+    fName: '', fKcal: '', fP: '', fC: '', fF: '', fFav: false,
+    chartMode: 'week'
+  };
+
+  var now0 = new Date();
+  state.calYear = now0.getFullYear();
+  state.calMonth = now0.getMonth();
+
+  function defaultFavs() {
+    return [
+      { id: 'f1', name: '雞胸肉 100g', kcal: 165, p: 31, c: 0, f: 4 },
+      { id: 'f2', name: '茶葉蛋', kcal: 75, p: 7, c: 1, f: 5 },
+      { id: 'f3', name: '無糖豆漿 400ml', kcal: 80, p: 7, c: 6, f: 3 },
+      { id: 'f4', name: '香蕉', kcal: 90, p: 1, c: 23, f: 0 }
+    ];
+  }
+
+  function load() {
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) {}
+    if (saved) {
+      state.days = saved.days || {};
+      state.favs = saved.favs || defaultFavs();
+      state.targets = saved.targets || { kcal: 1600, protein: 130, carbs: 150, fat: 53 };
+      state.lang = saved.lang || 'zh-TW';
+      state.theme = saved.theme || 'cream';
+    } else {
+      state.days = {};
+      state.favs = defaultFavs();
+      state.targets = { kcal: 1600, protein: 130, carbs: 150, fat: 53 };
+      state.lang = 'zh-TW';
+      state.theme = 'cream';
+      persist();
+    }
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify({ days: state.days, favs: state.favs, targets: state.targets, lang: state.lang, theme: state.theme }));
+    } catch (e) { console.warn('無法儲存資料', e); }
+  }
+
+  function dayOf(key) { return state.days[key] || { entries: [], photos: [] }; }
+  function ensureDay(key) {
+    if (!state.days[key]) state.days[key] = { entries: [], photos: [] };
+    if (!state.days[key].entries) state.days[key].entries = [];
+    if (!state.days[key].photos) state.days[key].photos = [];
+    if (state.days[key].note == null) state.days[key].note = '';
+    return state.days[key];
+  }
+  function totalsOf(d) {
+    var kcal = 0, p = 0, c = 0, f = 0, burned = 0;
+    (d.entries || []).forEach(function (e) {
+      if (e.type === 'exercise') burned += e.kcal;
+      else { kcal += e.kcal; p += e.p || 0; c += e.c || 0; f += e.f || 0; }
+    });
+    return { kcal: kcal, p: p, c: c, f: f, burned: burned };
+  }
+  function pct(v, m) { if (!m) return '0%'; return Math.min(100, Math.round(v / m * 100)) + '%'; }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function dayHasData(d) {
+    return (d.entries && d.entries.length) || d.weight != null || (d.photos && d.photos.length) || (d.note && d.note.trim().length);
+  }
+
+  // ==================== 語言 / 主題 套用 ====================
+  function applyI18nDom() {
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      el.textContent = t(el.getAttribute('data-i18n'));
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
+      el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph')));
+    });
+    document.documentElement.setAttribute('dir', state.lang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', state.lang);
+  }
+
+  function applyTheme(themeKey) {
+    document.body.className = themeKey === 'cream' ? '' : ('theme-' + themeKey);
+  }
+
+  function renderThemeRow() {
+    var row = document.getElementById('theme-row');
+    row.innerHTML = '';
+    THEMES.forEach(function (key) {
+      var sw = document.createElement('div');
+      sw.className = 'theme-swatch' + (state.theme === key ? ' active' : '');
+      sw.innerHTML = '<div class="theme-dot" style="background:' + THEME_DOT_COLOR[key] + '"></div><div class="theme-name">' + t('theme_' + key) + '</div>';
+      sw.addEventListener('click', function () {
+        state.theme = key;
+        applyTheme(key);
+        persist();
+        renderThemeRow();
+      });
+      row.appendChild(sw);
+    });
+  }
+
+  // ==================== 日曆 ====================
+  function renderCalendarWeekdayHeader() {
+    var wrap = document.getElementById('cal-weekdays');
+    var arr = WEEKDAY_HEADER[state.lang] || WEEKDAY_HEADER['zh-TW'];
+    wrap.innerHTML = arr.map(function (s) { return '<span>' + s + '</span>'; }).join('');
+  }
+
+  function renderCalendar() {
+    document.getElementById('cal-title').textContent = calMonthTitle(state.calYear, state.calMonth);
+    renderCalendarWeekdayHeader();
+    var first = new Date(state.calYear, state.calMonth, 1);
+    var startWeekday = first.getDay();
+    var daysInMonth = new Date(state.calYear, state.calMonth + 1, 0).getDate();
+    var grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+    for (var i = 0; i < startWeekday; i++) {
+      var blank = document.createElement('div');
+      blank.className = 'cal-cell empty';
+      grid.appendChild(blank);
+    }
+    var tKey = todayKey();
+    var monthEntryDays = 0, monthPhotoCount = 0;
+    for (var day = 1; day <= daysInMonth; day++) {
+      var d = new Date(state.calYear, state.calMonth, day);
+      var key = keyOfDate(d);
+      var dd = state.days[key];
+      var hasData = dd && dayHasData(dd);
+      if (dd && dd.entries && dd.entries.length) monthEntryDays++;
+      if (dd && dd.photos) monthPhotoCount += dd.photos.length;
+      var cell = document.createElement('div');
+      cell.className = 'cal-cell' + (key === tKey ? ' today' : '') + (hasData ? ' has-data' : '');
+      cell.innerHTML = '<div class="num">' + day + '</div>' + (hasData ? '<div class="dot"></div>' : '');
+      (function (k) {
+        cell.addEventListener('click', function () { openDay(k); });
+      })(key);
+      grid.appendChild(cell);
+    }
+    var photoPart = monthPhotoCount ? t('cal_summary_photo_part', { n: monthPhotoCount }) : '';
+    document.getElementById('cal-summary').textContent = t('cal_summary', { days: monthEntryDays, photoPart: photoPart });
+  }
+
+  function openDay(key) {
+    state.selectedDate = key;
+    state.view = 'day';
+    switchView('day');
+  }
+
+  // ==================== 單日紀錄 ====================
+  function renderDay() {
+    var key = state.selectedDate || todayKey();
+    var dt = parseKey(key);
+    var weekArr = WEEKDAY_DAY[state.lang] || WEEKDAY_DAY['zh-TW'];
+    var isToday = key === todayKey();
+    document.getElementById('d-date').textContent = (dt.getMonth() + 1) + '/' + dt.getDate() + ' ' + weekArr[dt.getDay()] + (isToday ? t('day_today_suffix') : '');
+    document.getElementById('d-headline').textContent = isToday ? t('headline_today') : t('headline_other');
+
+    var tg = state.targets;
+    var td = ensureDay(key);
+    var tt = totalsOf(td);
+
+    var noteInput = document.getElementById('d-note-input');
+    if (document.activeElement !== noteInput) {
+      noteInput.value = td.note || '';
+    }
+
+    document.getElementById('d-kcal').innerHTML = tt.kcal + ' <span class="sub">/ ' + tg.kcal + ' kcal</span>';
+    var kbar = document.getElementById('d-kcal-bar');
+    kbar.style.width = pct(tt.kcal, tg.kcal);
+    kbar.style.background = tt.kcal > tg.kcal ? 'var(--accent-warn)' : 'var(--accent)';
+
+    document.getElementById('d-protein').innerHTML = tt.p + ' <span class="sub">/ ' + tg.protein + ' g</span>';
+    document.getElementById('d-protein-bar').style.width = pct(tt.p, tg.protein);
+
+    document.getElementById('d-macros').innerHTML =
+      '<span>' + t('carb_label') + ' ' + tt.c + '/' + tg.carbs + 'g</span><span>' + t('fat_label') + ' ' + tt.f + '/' + tg.fat + 'g</span><span>' + t('exercise_label') + ' ' + tt.burned + ' kcal</span>';
+
+    var wInput = document.getElementById('d-weight-input');
+    if (document.activeElement !== wInput) {
+      wInput.value = td.weight != null ? String(td.weight) : '';
+    }
+
+    var lastW = null;
+    var refDate = parseKey(key);
+    for (var i = 1; i <= 60 && lastW == null; i++) {
+      var pd = new Date(refDate); pd.setDate(pd.getDate() - i);
+      var dd2 = state.days[keyOfDate(pd)];
+      if (dd2 && dd2.weight != null) lastW = dd2.weight;
+    }
+    var deltaEl = document.getElementById('d-weight-delta');
+    if (td.weight != null && lastW != null) {
+      var diff = Math.round((td.weight - lastW) * 10) / 10;
+      deltaEl.textContent = diff === 0 ? t('weight_flat') : (diff > 0 ? '▲ +' + diff + ' kg' : '▼ ' + diff + ' kg');
+      deltaEl.style.color = diff > 0 ? 'var(--red-bad)' : 'var(--green-good)';
+    } else {
+      deltaEl.textContent = '';
+    }
+
+    document.getElementById('d-photo-count').textContent = (td.photos || []).length ? (td.photos.length + ' ' + t('photo_count_suffix')) : '';
+    var photoGrid = document.getElementById('day-photo-grid');
+    photoGrid.innerHTML = '';
+    (td.photos || []).forEach(function (ph) {
+      var cell = document.createElement('div');
+      cell.className = 'photo-cell';
+      cell.innerHTML = '<div class="img" style="background-image:url(&quot;' + ph.url + '&quot;)"></div>';
+      var del = document.createElement('div');
+      del.className = 'del';
+      del.textContent = '×';
+      del.addEventListener('click', function () {
+        td.photos = td.photos.filter(function (x) { return x.id !== ph.id; });
+        persist(); renderAll();
+      });
+      cell.appendChild(del);
+      photoGrid.appendChild(cell);
+    });
+
+    var chips = document.getElementById('fav-chips');
+    chips.innerHTML = '';
+    state.favs.forEach(function (fv) {
+      var el = document.createElement('div');
+      el.className = 'chip';
+      el.textContent = fv.name + ' ' + fv.kcal;
+      el.addEventListener('click', function () {
+        addEntry({ id: 'e' + Date.now() + Math.random().toString(16).slice(2), name: fv.name, type: 'food', time: new Date().toTimeString().slice(0, 5), kcal: fv.kcal, p: fv.p, c: fv.c, f: fv.f });
+      });
+      chips.appendChild(el);
+    });
+
+    var list = document.getElementById('day-entries');
+    list.innerHTML = '';
+    var entries = (td.entries || []).slice().reverse();
+    if (entries.length === 0) {
+      list.innerHTML = '<div class="entry-empty">' + t('entries_empty') + '</div>';
+    } else {
+      entries.forEach(function (e) {
+        var row = document.createElement('div');
+        row.className = 'entry-row';
+        var meta = e.time + (e.type === 'exercise' ? ' · ' + t('exercise_label') : ' · ' + t('protein_label') + ' ' + (e.p || 0) + 'g');
+        var kcalLabel = (e.type === 'exercise' ? '-' : '') + e.kcal + ' kcal';
+        var color = e.type === 'exercise' ? 'var(--text)' : 'var(--accent)';
+        row.innerHTML =
+          '<div style="flex:1;min-width:0"><div class="name">' + escapeHtml(e.name) + '</div><div class="meta">' + meta + '</div></div>' +
+          '<div class="kcal" style="color:' + color + '">' + kcalLabel + '</div>';
+        var delBtn = document.createElement('div');
+        delBtn.className = 'x-btn';
+        delBtn.textContent = '×';
+        delBtn.addEventListener('click', function () {
+          td.entries = td.entries.filter(function (x) { return x.id !== e.id; });
+          persist(); renderAll();
+        });
+        row.appendChild(delBtn);
+        list.appendChild(row);
+      });
+    }
+  }
+
+  function addEntry(entry) {
+    var key = state.selectedDate || todayKey();
+    var td = ensureDay(key);
+    td.entries.push(entry);
+    persist(); renderAll();
+  }
+
+  // ==================== 趨勢 ====================
+  function renderTrend() {
+    var tg = state.targets;
+    var n = state.chartMode === 'week' ? 7 : 30;
+    var series = [];
+    for (var i = n - 1; i >= 0; i--) {
+      var key = keyFor(i);
+      var d = state.days[key];
+      var dt = new Date(); dt.setDate(dt.getDate() - i);
+      series.push({ key: key, label: (dt.getMonth() + 1) + '/' + dt.getDate(), totals: d ? totalsOf(d) : { kcal: 0, p: 0 }, weight: d ? d.weight : null });
+    }
+
+    document.getElementById('target-kcal-lbl').textContent = tg.kcal;
+    document.getElementById('target-protein-lbl').textContent = tg.protein;
+
+    var maxK = Math.max(tg.kcal, Math.max.apply(null, series.map(function (x) { return x.totals.kcal; }))) * 1.15 || 1;
+    var kcalBarsWrap = document.getElementById('kcal-bars');
+    kcalBarsWrap.className = 'bars-wrap' + (state.chartMode === 'month' ? ' month' : '');
+    kcalBarsWrap.innerHTML = '<div class="target-line" id="kcal-target-line" style="bottom:' + (Math.round(tg.kcal / maxK * 100)) + '%"></div>';
+    series.forEach(function (x) {
+      var bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = Math.round(x.totals.kcal / maxK * 100) + '%';
+      bar.style.background = x.totals.kcal > tg.kcal ? 'var(--accent-warn)' : 'var(--accent)';
+      if (state.chartMode === 'week' && x.totals.kcal > 0) {
+        var vlabel = document.createElement('div');
+        vlabel.className = 'bar-value';
+        vlabel.textContent = Math.round(x.totals.kcal);
+        bar.appendChild(vlabel);
+      }
+      kcalBarsWrap.appendChild(bar);
+    });
+
+    var maxP = Math.max(tg.protein, Math.max.apply(null, series.map(function (x) { return x.totals.p; }))) * 1.15 || 1;
+    var proteinBarsWrap = document.getElementById('protein-bars');
+    proteinBarsWrap.className = 'bars-wrap short' + (state.chartMode === 'month' ? ' month' : '');
+    proteinBarsWrap.innerHTML = '';
+    series.forEach(function (x) {
+      var bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = Math.round(x.totals.p / maxP * 100) + '%';
+      bar.style.background = x.totals.p >= tg.protein ? 'var(--green)' : 'var(--panel)';
+      if (state.chartMode === 'week' && x.totals.p > 0) {
+        var vlabel2 = document.createElement('div');
+        vlabel2.className = 'bar-value';
+        vlabel2.textContent = Math.round(x.totals.p);
+        bar.appendChild(vlabel2);
+      }
+      proteinBarsWrap.appendChild(bar);
+    });
+
+    var ws = series.filter(function (x) { return x.weight != null; });
+    var wMin = ws.length ? Math.min.apply(null, ws.map(function (x) { return x.weight; })) - 0.3 : 0;
+    var wMax = ws.length ? Math.max.apply(null, ws.map(function (x) { return x.weight; })) + 0.3 : 1;
+    var weightChart = document.getElementById('weight-chart');
+    weightChart.innerHTML = '';
+    series.forEach(function (x, idx) {
+      if (x.weight == null) return;
+      var dot = document.createElement('div');
+      dot.className = 'weight-dot';
+      dot.style.left = Math.round((idx + 0.5) / n * 100) + '%';
+      dot.style.bottom = Math.round((x.weight - wMin) / (wMax - wMin || 1) * 90) + '%';
+      weightChart.appendChild(dot);
+    });
+
+    var daysWith = series.filter(function (x) { return x.totals.kcal > 0; });
+    var avgKcal = daysWith.length ? Math.round(daysWith.reduce(function (a, x) { return a + x.totals.kcal; }, 0) / daysWith.length) : 0;
+    var avgProtein = daysWith.length ? Math.round(daysWith.reduce(function (a, x) { return a + x.totals.p; }, 0) / daysWith.length) : 0;
+    document.getElementById('avg-kcal').textContent = avgKcal;
+    document.getElementById('avg-protein').textContent = avgProtein + 'g';
+
+    var periodEl = document.getElementById('period-weight-delta');
+    if (ws.length >= 2) {
+      var delta = Math.round((ws[ws.length - 1].weight - ws[0].weight) * 10) / 10;
+      periodEl.textContent = (delta > 0 ? '+' : '') + delta + ' kg';
+    } else {
+      periodEl.textContent = '—';
+    }
+
+    document.getElementById('weight-range-lbl').textContent = ws.length ? (ws[0].weight + ' → ' + ws[ws.length - 1].weight + ' kg') : t('no_data');
+    document.getElementById('first-day-lbl-1').textContent = series[0].label;
+    document.getElementById('last-day-lbl-1').textContent = series[series.length - 1].label;
+    document.getElementById('first-day-lbl-2').textContent = series[0].label;
+    document.getElementById('last-day-lbl-2').textContent = series[series.length - 1].label;
+  }
+
+  // ==================== 體態相簿（依日期分組）====================
+  function openPhotoDay(key) {
+    state.photoViewDate = key;
+    switchView('photoDay');
+  }
+
+  function renderPhotos() {
+    var keys = Object.keys(state.days).filter(function (k) { return state.days[k].photos && state.days[k].photos.length; }).sort().reverse();
+    document.getElementById('photos-empty').classList.toggle('hidden', keys.length !== 0);
+    var grid = document.getElementById('photo-grid');
+    grid.innerHTML = '';
+    keys.forEach(function (k) {
+      var photos = state.days[k].photos;
+      var label = k.slice(5).replace('-', '/') + (k === todayKey() ? t('day_today_suffix') : '');
+      var cover = photos[photos.length - 1];
+      var cell = document.createElement('div');
+      cell.className = 'photo-cell album-cover';
+      cell.innerHTML =
+        '<div class="img" style="background-image:url(&quot;' + cover.url + '&quot;)"></div>' +
+        '<div class="tag">' + label + '</div>' +
+        (photos.length > 1 ? '<div class="count-badge">' + photos.length + ' ' + t('photo_count_suffix') + '</div>' : '');
+      cell.addEventListener('click', function () { openPhotoDay(k); });
+      grid.appendChild(cell);
+    });
+  }
+
+  function renderPhotoDayView() {
+    var key = state.photoViewDate;
+    if (!key) return;
+    var dt = parseKey(key);
+    var weekArr = WEEKDAY_DAY[state.lang] || WEEKDAY_DAY['zh-TW'];
+    document.getElementById('pd-date-title').textContent =
+      (dt.getMonth() + 1) + '/' + dt.getDate() + ' ' + weekArr[dt.getDay()] + (key === todayKey() ? t('day_today_suffix') : '');
+    var td = ensureDay(key);
+    var grid = document.getElementById('photoday-grid');
+    grid.innerHTML = '';
+    td.photos.slice().reverse().forEach(function (ph) {
+      var cell = document.createElement('div');
+      cell.className = 'photo-cell';
+      cell.innerHTML = '<div class="img" style="background-image:url(&quot;' + ph.url + '&quot;)"></div>';
+      var del = document.createElement('div');
+      del.className = 'del';
+      del.textContent = '×';
+      del.addEventListener('click', function () {
+        td.photos = td.photos.filter(function (x) { return x.id !== ph.id; });
+        persist();
+        if (td.photos.length === 0) { switchView('photos'); } else { renderAll(); }
+      });
+      cell.appendChild(del);
+      grid.appendChild(cell);
+    });
+  }
+
+  // ==================== 設定 ====================
+  function renderSettings() {
+    var tg = state.targets;
+    if (document.activeElement !== document.getElementById('set-kcal')) document.getElementById('set-kcal').value = tg.kcal;
+    if (document.activeElement !== document.getElementById('set-protein')) document.getElementById('set-protein').value = tg.protein;
+    if (document.activeElement !== document.getElementById('set-carbs')) document.getElementById('set-carbs').value = tg.carbs;
+    if (document.activeElement !== document.getElementById('set-fat')) document.getElementById('set-fat').value = tg.fat;
+
+    var langSelect = document.getElementById('lang-select');
+    if (langSelect.value !== state.lang) langSelect.value = state.lang;
+
+    renderThemeRow();
+
+    var card = document.getElementById('fav-manage-card');
+    card.innerHTML = '';
+    state.favs.forEach(function (fv) {
+      var row = document.createElement('div');
+      row.className = 'fav-manage-row';
+      row.innerHTML = '<div><div class="n">' + escapeHtml(fv.name) + '</div><div class="m">' + fv.kcal + ' kcal · ' + t('protein_label') + ' ' + fv.p + 'g</div></div>';
+      var del = document.createElement('div');
+      del.className = 'x-btn';
+      del.textContent = '×';
+      del.addEventListener('click', function () {
+        state.favs = state.favs.filter(function (x) { return x.id !== fv.id; });
+        persist(); renderAll();
+      });
+      row.appendChild(del);
+      card.appendChild(row);
+    });
+    var hint = document.createElement('div');
+    hint.className = 'hint-row';
+    hint.textContent = t('fav_manage_hint');
+    card.appendChild(hint);
+  }
+
+  function renderAll() {
+    applyI18nDom();
+    renderCalendar();
+    renderDay();
+    renderTrend();
+    renderPhotos();
+    renderPhotoDayView();
+    renderSettings();
+    renderSheet();
+  }
+
+  // ==================== Tabs / 切換畫面 ====================
+  var pages = { calendar: 'page-calendar', day: 'page-day', trend: 'page-trend', photos: 'page-photos', photoDay: 'page-photo-day', settings: 'page-settings' };
+  function switchView(view) {
+    state.view = view;
+    Object.keys(pages).forEach(function (k) {
+      document.getElementById(pages[k]).classList.toggle('hidden', k !== view);
+    });
+    var tabForView = view;
+    if (view === 'day') tabForView = 'calendar';
+    if (view === 'photoDay') tabForView = 'photos';
+    document.querySelectorAll('.tabbar .item').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-tab') === tabForView);
+    });
+    renderAll();
+  }
+  document.querySelectorAll('.tabbar .item').forEach(function (el) {
+    el.addEventListener('click', function () { switchView(el.getAttribute('data-tab')); });
+  });
+  document.getElementById('day-back-btn').addEventListener('click', function () { switchView('calendar'); });
+  document.getElementById('photoday-back-btn').addEventListener('click', function () { switchView('photos'); });
+
+  document.getElementById('cal-prev').addEventListener('click', function () {
+    state.calMonth--;
+    if (state.calMonth < 0) { state.calMonth = 11; state.calYear--; }
+    renderCalendar();
+  });
+  document.getElementById('cal-next').addEventListener('click', function () {
+    state.calMonth++;
+    if (state.calMonth > 11) { state.calMonth = 0; state.calYear++; }
+    renderCalendar();
+  });
+  document.getElementById('cal-today-btn').addEventListener('click', function () {
+    var n = new Date();
+    state.calYear = n.getFullYear(); state.calMonth = n.getMonth();
+    renderCalendar();
+  });
+
+  document.querySelectorAll('.toggle-pill .opt[data-chart]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      state.chartMode = el.getAttribute('data-chart');
+      document.querySelectorAll('.toggle-pill .opt[data-chart]').forEach(function (o) { o.classList.remove('active'); });
+      el.classList.add('active');
+      renderTrend();
+    });
+  });
+
+  document.getElementById('d-weight-input').addEventListener('change', function (e) {
+    var v = parseFloat(e.target.value);
+    var key = state.selectedDate || todayKey();
+    var td = ensureDay(key);
+    td.weight = isNaN(v) ? null : v;
+    persist(); renderAll();
+  });
+
+  document.getElementById('d-note-input').addEventListener('change', function (e) {
+    var key = state.selectedDate || todayKey();
+    var td = ensureDay(key);
+    td.note = e.target.value;
+    persist();
+  });
+
+  // ==================== 拍照（可多張）====================
+  var dayPhotoInput = document.getElementById('day-photo-input');
+  document.getElementById('photo-btn-label').addEventListener('click', function () {
+    dayPhotoInput.click();
+  });
+
+  function savePhotoDataUrl(url) {
+    var key = state.selectedDate || todayKey();
+    var td = ensureDay(key);
+    td.photos.push({ id: 'p' + Date.now() + Math.random().toString(16).slice(2), url: url, time: new Date().toTimeString().slice(0, 5) });
+    persist(); renderAll();
+  }
+
+  function readFileAsDataUrl(file, cb) {
+    var reader = new FileReader();
+    reader.onload = function () { cb(reader.result); };
+    reader.onerror = function () { alert(t('photo_error')); };
+    reader.readAsDataURL(file);
+  }
+
+  dayPhotoInput.addEventListener('change', function (e) {
+    var files = e.target.files ? Array.prototype.slice.call(e.target.files) : [];
+    e.target.value = '';
+    if (!files.length) return;
+
+    function processOne(file) {
+      try {
+        readFileAsDataUrl(file, function (rawDataUrl) {
+          try {
+            var img = new Image();
+            img.onload = function () {
+              try {
+                var scale = Math.min(1, 900 / Math.max(img.width, img.height));
+                var cv = document.createElement('canvas');
+                cv.width = Math.max(1, Math.round(img.width * scale));
+                cv.height = Math.max(1, Math.round(img.height * scale));
+                var ctx = cv.getContext('2d');
+                ctx.drawImage(img, 0, 0, cv.width, cv.height);
+                var url = cv.toDataURL('image/jpeg', 0.8);
+                savePhotoDataUrl(url);
+              } catch (err2) {
+                savePhotoDataUrl(rawDataUrl);
+              }
+            };
+            img.onerror = function () { savePhotoDataUrl(rawDataUrl); };
+            img.src = rawDataUrl;
+          } catch (err) {
+            savePhotoDataUrl(rawDataUrl);
+          }
+        });
+      } catch (err) {
+        alert(t('photo_error2'));
+      }
+    }
+
+    files.forEach(processOne);
+  });
+
+  // ==================== 設定輸入 ====================
+  function bindSettingInput(id, field) {
+    document.getElementById(id).addEventListener('change', function (e) {
+      state.targets[field] = Math.max(0, Math.round(Number(e.target.value) || 0));
+      persist(); renderAll();
+    });
+  }
+  bindSettingInput('set-kcal', 'kcal');
+  bindSettingInput('set-protein', 'protein');
+  bindSettingInput('set-carbs', 'carbs');
+  bindSettingInput('set-fat', 'fat');
+
+  document.getElementById('lang-select').addEventListener('change', function (e) {
+    state.lang = e.target.value;
+    persist();
+    renderAll();
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    var ok = window.confirm(t('reset_confirm'));
+    if (!ok) return;
+    state.days = {};
+    state.favs = defaultFavs();
+    state.targets = { kcal: 1600, protein: 130, carbs: 150, fat: 53 };
+    persist();
+    switchView('calendar');
+  });
+
+  // ==================== 記一筆 sheet ====================
+  function openSheet() {
+    state.sheetOpen = true;
+    state.fType = 'food'; state.fName = ''; state.fKcal = ''; state.fP = ''; state.fC = ''; state.fF = ''; state.fFav = false;
+    document.getElementById('sheet-backdrop').classList.remove('hidden');
+    document.getElementById('sheet').classList.remove('hidden');
+    renderSheet();
+  }
+  function closeSheet() {
+    state.sheetOpen = false;
+    document.getElementById('sheet-backdrop').classList.add('hidden');
+    document.getElementById('sheet').classList.add('hidden');
+  }
+  document.getElementById('open-sheet-btn').addEventListener('click', openSheet);
+  document.getElementById('close-sheet-btn').addEventListener('click', closeSheet);
+  document.getElementById('sheet-backdrop').addEventListener('click', closeSheet);
+
+  document.querySelectorAll('.toggle-pill .opt[data-ftype]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      state.fType = el.getAttribute('data-ftype');
+      renderSheet();
+    });
+  });
+
+  ['f-name', 'f-kcal', 'f-p', 'f-c', 'f-f'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', function (e) {
+      var map = { 'f-name': 'fName', 'f-kcal': 'fKcal', 'f-p': 'fP', 'f-c': 'fC', 'f-f': 'fF' };
+      state[map[id]] = e.target.value;
+      updateSubmitState();
+    });
+  });
+
+  document.getElementById('fav-toggle-row').addEventListener('click', function () {
+    state.fFav = !state.fFav;
+    renderSheet();
+  });
+
+  document.getElementById('submit-entry-btn').addEventListener('click', function () {
+    var canSubmit = state.fName.trim() && Number(state.fKcal) > 0;
+    if (!canSubmit) return;
+    var entry = {
+      id: 'e' + Date.now() + Math.random().toString(16).slice(2),
+      name: state.fName.trim(),
+      type: state.fType,
+      time: new Date().toTimeString().slice(0, 5),
+      kcal: Math.round(Number(state.fKcal) * 10) / 10,
+      p: Math.round((Number(state.fP) || 0) * 10) / 10,
+      c: Math.round((Number(state.fC) || 0) * 10) / 10,
+      f: Math.round((Number(state.fF) || 0) * 10) / 10
+    };
+    var key = state.selectedDate || todayKey();
+    var td = ensureDay(key);
+    td.entries.push(entry);
+    if (state.fFav && state.fType === 'food') {
+      state.favs = state.favs.concat([{ id: 'f' + Date.now(), name: entry.name, kcal: entry.kcal, p: entry.p, c: entry.c, f: entry.f }]);
+    }
+    persist();
+    closeSheet();
+    renderAll();
+  });
+
+  function updateSubmitState() {
+    var canSubmit = state.fName.trim() && Number(state.fKcal) > 0;
+    var btn = document.getElementById('submit-entry-btn');
+    btn.style.background = canSubmit ? 'var(--accent)' : 'var(--disabled)';
+  }
+
+  function renderSheet() {
+    var isFood = state.fType === 'food';
+    document.querySelectorAll('.toggle-pill .opt[data-ftype]').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-ftype') === state.fType);
+    });
+    document.getElementById('f-name').placeholder = isFood ? t('food_name_ph') : t('exercise_name_ph');
+    document.getElementById('f-kcal-label').textContent = isFood ? t('kcal_field') : t('burn_field');
+    document.getElementById('f-p-wrap').classList.toggle('hidden', !isFood);
+    document.getElementById('f-c-wrap').classList.toggle('hidden', !isFood);
+    document.getElementById('f-f-wrap').classList.toggle('hidden', !isFood);
+    document.getElementById('fav-toggle-row').classList.toggle('hidden', !isFood);
+
+    if (document.activeElement.tagName !== 'INPUT') {
+      document.getElementById('f-name').value = state.fName;
+      document.getElementById('f-kcal').value = state.fKcal;
+      document.getElementById('f-p').value = state.fP;
+      document.getElementById('f-c').value = state.fC;
+      document.getElementById('f-f').value = state.fF;
+    }
+
+    var favCheck = document.getElementById('fav-check');
+    favCheck.style.background = state.fFav ? 'var(--accent)' : 'transparent';
+    favCheck.textContent = state.fFav ? '✓' : '';
+
+    updateSubmitState();
+  }
+
+  // ==================== init ====================
+  load();
+  applyTheme(state.theme);
+  renderAll();
+})();
+</script>
+</body>
+</html>
